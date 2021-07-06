@@ -22,4 +22,79 @@ public class MemberController {
 		}
 	}
 
+
+
+	public void selectOne(String memberId) {
+
+		MemberMenu menu = new MemberMenu();
+		Member m = new MemberDAO().selectOne(memberId);
+		
+		if(m != null ) {
+			menu.displayMember(m);
+		}else {
+			menu.displayError(memberId + "에 해당하는 데이터가 없습니다.");
+
+		}
+	}
+
+	
+
+
+	public void insertMember(Member m) {
+		int result = new MemberDAO().insertMember(m);
+		if(result > 0) { // 성공 된 갯수를 반환
+			new MemberMenu().displaySucces("회원가입성공");
+		}else {
+			new MemberMenu().displayError("회원가입실패");
+		}
+	}
+
+
+
+	public void selectOneByName(String memberName) {
+
+		MemberMenu menu = new MemberMenu();
+		Member m = new MemberDAO().selectTwo(memberName);
+		
+		if(m != null ) {
+			menu.displayMember(m);
+		}else {
+			menu.displayError(memberName + "에 해당하는 데이터가 없습니다.");
+
+		}
+		
+	}
+
+
+
+	public void updateMember(String memberId, int column,String contents) {
+		MemberMenu menu = new MemberMenu();
+		String columnName = null;
+		switch(column) {
+		case 1 : columnName = "EMAIL";
+			break;
+		case 2 : columnName = "PHONE";
+			break;
+		case 3 : columnName = "ADDRESS";
+			break;
+		default :
+			menu.displayError(column + "번에 해당하는 메뉴가 존재하지 않습니다.");
+		}
+			
+		new MemberDAO().updateMember(memberId,columnName,contents);
+		
+	}
+
+
+
+	public void deleteMember(String memberId) {
+		new MemberDAO().deleteMemeber(memberId);
+
+		
+	}
+
+
+
+
+
 }
