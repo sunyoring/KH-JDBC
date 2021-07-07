@@ -35,13 +35,18 @@ public class MemberMenu {
 				mController.selectOne(inputMemberID());
 				break;
 			case 3:
-				mController.selectOneByName(inputMemberName());
+				mController.selectName(inputMemberName2());
+				
+				/*mController.selectOneByName(inputMemberName());*/
 				break;
 			case 4:
 				mController.insertMember(inputMember());
 				break;
 			case 5:
-				mController.updateMember(inputMemberID(),updateMenu(),updateContents());
+		
+				mController.updateMember2(updateMmeber2());
+				
+				/*mController.updateMember(inputMemberID(),updateMenu(),updateContents());*/
 				break;
 			case 7:
 				mController.deleteMember(inputMemberID());
@@ -57,6 +62,36 @@ public class MemberMenu {
 			}
 
 		} while (true);
+	}
+
+
+
+
+	private Member updateMmeber2() {
+		Member m = new Member();
+		
+		System.out.println("암호 : ");
+		m.setPassword(sc.next());
+		System.out.println("나이 : ");
+		m.setAge(sc.nextInt());
+		System.out.println("성별(M/F) : ");
+		m.setGender(sc.next().toUpperCase());
+		System.out.println("이메일 : ");
+		m.setEmail(sc.next());
+		System.out.println("전화번호(- 빼고 입력) : ");
+		m.setPhone(sc.next());
+		System.out.println("주소 : ");
+		m.setAddress(sc.nextLine());
+	
+		return m;
+	}
+
+
+
+
+	private String inputMemberName2() {
+		System.out.println("조회할 회원 이름 입력 : ");
+		return sc.next();
 	}
 
 
