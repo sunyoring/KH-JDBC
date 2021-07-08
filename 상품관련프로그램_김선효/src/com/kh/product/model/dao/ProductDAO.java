@@ -62,7 +62,7 @@ public class ProductDAO {
 		ResultSet rset = null; // Select 결과를 담아 올 객체
 
 		// String sql = "SELECT * FROM ProductDAO"; // 실행이 자동으로 되기때문에 쿼리 뒤에 세미콜론은 붙이지 않는다.
-		String sql = prop.getProperty("selectALL");
+		String sql = prop.getProperty("selectProduct");
 		try {
 
 			// 3. 쿼리문을 실행할 statement 객체 생성
@@ -88,7 +88,7 @@ public class ProductDAO {
 
 		} catch (Exception e) {
 			e.printStackTrace();
-			throw new ProductException("selectAll 에러 : " + e.getMessage());
+			throw new ProductException("selectProduct 에러 : " + e.getMessage());
 
 		} finally { // 자원을 역순으로 반납해준다. (꼭!)
 
@@ -285,7 +285,7 @@ public class ProductDAO {
 		PreparedStatement pstmt = null;
 
 		// insertProduct=INSERT INTO PRODECT_STUCK VALUES (?, ?, ?, ?)
-		String sql = prop.getProperty("insertProductDAO");
+		String sql = prop.getProperty("insertProduct");
 		try {
 			
 			pstmt = conn.prepareStatement(sql);
@@ -295,18 +295,18 @@ public class ProductDAO {
 			pstmt.setInt(3, p.getProductPrice());
 			pstmt.setString(4, p.getpDescription());
 		
-
+			
 			result = pstmt.executeUpdate(); // 처리한 행의 갯수가 리턴된다.
+			System.out.println("insertProduct 처리결과 : " + result);
+
 
 		} catch (Exception e) {
 			e.printStackTrace();
-			throw new ProductException("insertProductDAO 에러 : " + e.getMessage());
+			throw new ProductException("insertProduct 에러 : " + e.getMessage());
 
 		} finally { // 자원을 역순으로 반납해준다. (꼭!)
 
 				close(pstmt);
-				close(conn);
-
 
 		}
 
@@ -315,10 +315,8 @@ public class ProductDAO {
 
 	public int deleteProduct(Connection conn, String ProductId) throws ProductException {
 		int result = 0;
-		Product p = null;
 		PreparedStatement pstmt = null;
 		
-		//deleteProduct=DELETE FROM MEMBER WHERE PRODUCT_ID = ?
 		String sql = prop.getProperty("deleteProduct");
 
 		try {
@@ -336,7 +334,7 @@ public class ProductDAO {
 			e.printStackTrace();
 		} finally { // 자원을 역순으로 반납해준다. (꼭!)
 			close(pstmt);
-			close(conn);
+
 			}
 
 		return result;
@@ -348,39 +346,60 @@ public class ProductDAO {
 
 		int result = 0;
 
-		PreparedStatement pstmt = null; // sql 패키지의 Statement
-										// 쿼리 뒤에
+		PreparedStatement pstmt = null; 
+		String sql = prop.getProperty("updateProduct"); // 되기때문에
 
 		try {
 
-			String sql = prop.getProperty("updateProduct"); // 되기때문에
 
 			pstmt = conn.prepareStatement(sql);
 			
 			pstmt.setString(1, p.getProductName());
 			pstmt.setInt(2, p.getProductPrice());
-			pstmt.setString(3, p.getpDescription());
+			pstmt.setString(3,p.getpDescription());
 			pstmt.setString(4, p.getProductId());
 			
 	
 
 			conn.setAutoCommit(false);
-			// 4. 쿼리문 전송, 실행결과를 ResultSet으로 받기
-			result = pstmt.executeUpdate(sql);
+
+			result = pstmt.executeUpdate();
+			System.out.println("실행후 " + result);
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw new ProductException("updateProduct 에러 : " + e.getMessage());
+		} finally { // 자원을 역순으로 반납해준다. (꼭!)
+				close(pstmt);
+
+		}
+
+		return result;
+	}
+
+	public int productIn(Connection conn, ProductIO pIO) throws ProductException {
+		int result = 0;
+		PreparedStatement pstmt = null;
+		//UPDATE PRODUCT SET  = ? 입출고수량 WHERE 상품아이디 = ?
+		String sql = prop.getProperty("productIn");
+		try {
+			
+			pstmt = conn.prepareStatement(sql);
+			conn.setAutoCommit(false); // 자동 커밋 방지
+	
+		
+			
+			result = pstmt.executeUpdate(); // 처리한 행의 갯수가 리턴된다.
+			System.out.println("insertProduct 처리결과 : " + result);
+
 
 		} catch (Exception e) {
-
 			e.printStackTrace();
-			throw new ProductException("updateProductDAO 에러 : " + e.getMessage());
+			throw new ProductException("insertProduct 에러 : " + e.getMessage());
+
 		} finally { // 자원을 역순으로 반납해준다. (꼭!)
 
-			try {
 				close(pstmt);
-				close(conn);
-
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
 
 		}
 

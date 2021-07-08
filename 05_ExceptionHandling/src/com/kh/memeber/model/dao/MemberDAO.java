@@ -152,20 +152,14 @@ public class MemberDAO {
 		return m;
 	}
 
-	public int insertMember(Member m) throws MemberException {
+	public int insertMember(Connection conn,Member m) throws MemberException {
 		int result = 0;
-		Connection conn = null;
 		PreparedStatement pstmt = null;
 
 		// String sql = "INSERT INTO MEMBER VALUES(?,?,?,?,?,?,?,?,?,sysdate)";
 		String sql = prop.getProperty("insertMember");
 		try {
-			Class.forName("oracle.jdbc.driver.OracleDriver");
-			System.out.println("드라이버 등록"); // 성공 시 확인용
-
-			conn = DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:xe", "student", "student");
-
-			System.out.println("conn = " + conn); // 성공하면 connection 값, 실패하면 null값이 출력
+			
 
 			pstmt = conn.prepareStatement(sql);
 			conn.setAutoCommit(false); // 자동 커밋 방지
@@ -187,14 +181,9 @@ public class MemberDAO {
 
 		} finally { // 자원을 역순으로 반납해준다. (꼭!)
 
-			try {
-				pstmt.close();
-				conn.close();
-			} catch (SQLException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-
+				close(pstmt);
+				close(conn);
+		
 		}
 
 		return result;

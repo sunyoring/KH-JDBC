@@ -37,7 +37,7 @@ public class MemberService {
 
 	public int insertMember(Member m) throws MemberException {
 		Connection conn = getConnection();
-		int result = new MemberDAO().insertMember(m);
+		int result = new MemberDAO().insertMember(conn, m);
 		if (result > 0) { // 성공 된 갯수를 반환
 			commit(conn);
 		} else {

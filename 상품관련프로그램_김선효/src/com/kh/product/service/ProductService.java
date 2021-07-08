@@ -80,10 +80,10 @@ public class ProductService {
 		return result;
 	}
 
-	public int updateProduct(Product m) throws ProductException {
+	public int updateProduct(Product p) throws ProductException {
 		Connection conn = getConnection();
 
-		int result = new ProductDAO().updateProduct(conn,m);
+		int result = new ProductDAO().updateProduct(conn,p);
 		
 		if (result > 0) {
 			commit(conn);
@@ -98,6 +98,18 @@ public class ProductService {
 	public void exitProgram() {
 		close(getConnection());
 
+	}
+
+
+	public int productIn(ProductIO pIO) throws ProductException {
+		Connection conn = getConnection();
+		int result = new ProductDAO().productIn(conn,pIO);
+		if (result > 0) { // 성공 된 갯수를 반환
+			commit(conn);
+		} else {
+			rollback(conn);
+		}
+		return result;
 	}
 
 

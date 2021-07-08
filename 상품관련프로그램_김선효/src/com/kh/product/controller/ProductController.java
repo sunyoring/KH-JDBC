@@ -176,6 +176,15 @@ public class ProductController {
 		new ProductService().exitProgram();
 	}
 
+	public void productIn(ProductIO pIO) throws ProductException {
+		int result;
+		result = new ProductService().productIn(pIO);
+
+		if (result > 0) { // 성공 된 갯수를 반환
+			new ProductMenu().displaySucces("입고 등록 성공");
+		}		
+	}
+
 	
 
 
